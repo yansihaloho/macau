@@ -1,6 +1,5 @@
 openapi: 3.1.0
 info:
-  # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
   description: API specification
@@ -10,13 +9,18 @@ servers:
 tags:
   - name: health
     description: Health operations
+  - name: lottery
+    description: Toto Macau lottery data
+  - name: analytics
+    description: Advanced analytics
+  - name: prediction
+    description: Prediction engine
 paths:
   /healthz:
     get:
       operationId: healthCheck
       tags: [health]
       summary: Health check
-      description: Returns server health status
       responses:
         "200":
           description: Healthy
@@ -24,6 +28,194 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /lottery/macau:
+    get:
+      operationId: getLotteryData
+      tags: [lottery]
+      summary: Get Toto Macau lottery data for a year
+      parameters:
+        - name: year
+          in: query
+          required: true
+          schema:
+            type: integer
+            enum: [2025, 2026]
+      responses:
+        "200":
+          description: Lottery data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LotteryYearData"
+
+  /lottery/macau/latest:
+    get:
+      operationId: getLatestResults
+      tags: [lottery]
+      summary: Get latest Toto Macau results
+      responses:
+        "200":
+          description: Latest results
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LatestResults"
+
+  /lottery/macau/stats:
+    get:
+      operationId: getLotteryStats
+      tags: [lottery]
+      summary: Basic stats for a year
+      parameters:
+        - name: year
+          in: query
+          required: true
+          schema:
+            type: integer
+            enum: [2025, 2026]
+      responses:
+        "200":
+          description: Stats
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LotteryStats"
+
+  /lottery/macau/sync:
+    post:
+      operationId: syncLotteryData
+      tags: [lottery]
+      summary: Sync latest data from source into database
+      responses:
+        "200":
+          description: Sync result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SyncResult"
+
+  /analytics/advanced:
+    get:
+      operationId: getAdvancedAnalytics
+      tags: [analytics]
+      summary: Full advanced analytics
+      parameters:
+        - name: year
+          in: query
+          required: false
+          schema:
+            type: integer
+            enum: [2025, 2026]
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 500
+      responses:
+        "200":
+          description: Advanced analytics
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdvancedAnalytics"
+
+  /analytics/heatmap:
+    get:
+      operationId: getHeatmap
+      tags: [analytics]
+      summary: Position-digit heatmap data
+      parameters:
+        - name: year
+          in: query
+          required: false
+          schema:
+            type: integer
+            enum: [2025, 2026]
+      responses:
+        "200":
+          description: Heatmap data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HeatmapData"
+
+  /analytics/markov:
+    get:
+      operationId: getMarkovChain
+      tags: [analytics]
+      summary: Markov chain transition matrix
+      parameters:
+        - name: year
+          in: query
+          required: false
+          schema:
+            type: integer
+            enum: [2025, 2026]
+      responses:
+        "200":
+          description: Markov chain
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MarkovData"
+
+  /prediction/generate:
+    get:
+      operationId: generatePrediction
+      tags: [prediction]
+      summary: Generate prediction for next draw
+      parameters:
+        - name: period
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: ["00:01", "13:00", "16:00", "19:00", "22:00", "23:00"]
+      responses:
+        "200":
+          description: Prediction result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PredictionResult"
+
+  /prediction/history:
+    get:
+      operationId: getPredictionHistory
+      tags: [prediction]
+      summary: Get prediction history
+      parameters:
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 50
+      responses:
+        "200":
+          description: Prediction history
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PredictionRecord"
+
+  /prediction/accuracy:
+    get:
+      operationId: getPredictionAccuracy
+      tags: [prediction]
+      summary: Engine accuracy stats
+      responses:
+        "200":
+          description: Accuracy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccuracyStats"
+
 components:
   schemas:
     HealthStatus:
@@ -31,6 +223,372 @@ components:
       properties:
         status:
           type: string
-      required:
-        - status
+      required: [status]
 
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+      required: [error]
+
+    DrawResult:
+      type: object
+      properties:
+        date:
+          type: string
+        day:
+          type: string
+        s0001:
+          type: ["string", "null"]
+        s1300:
+          type: ["string", "null"]
+        s1600:
+          type: ["string", "null"]
+        s1900:
+          type: ["string", "null"]
+        s2200:
+          type: ["string", "null"]
+        s2300:
+          type: ["string", "null"]
+      required: [date, day, s0001, s1300, s1600, s1900, s2200, s2300]
+
+    MonthData:
+      type: object
+      properties:
+        month:
+          type: string
+        monthNumber:
+          type: integer
+        year:
+          type: integer
+        results:
+          type: array
+          items:
+            $ref: "#/components/schemas/DrawResult"
+      required: [month, monthNumber, year, results]
+
+    LotteryYearData:
+      type: object
+      properties:
+        year:
+          type: integer
+        months:
+          type: array
+          items:
+            $ref: "#/components/schemas/MonthData"
+        totalDraws:
+          type: integer
+        lastUpdated:
+          type: string
+      required: [year, months, totalDraws, lastUpdated]
+
+    LatestResults:
+      type: object
+      properties:
+        date:
+          type: string
+        day:
+          type: string
+        results:
+          type: array
+          items:
+            type: object
+            properties:
+              session:
+                type: string
+              number:
+                type: ["string", "null"]
+            required: [session, number]
+        recentDays:
+          type: array
+          items:
+            $ref: "#/components/schemas/DrawResult"
+      required: [date, day, results, recentDays]
+
+    NumberFrequency:
+      type: object
+      properties:
+        number:
+          type: string
+        count:
+          type: integer
+      required: [number, count]
+
+    LotteryStats:
+      type: object
+      properties:
+        year:
+          type: integer
+        totalDraws:
+          type: integer
+        mostFrequent:
+          type: array
+          items:
+            $ref: "#/components/schemas/NumberFrequency"
+        leastFrequent:
+          type: array
+          items:
+            $ref: "#/components/schemas/NumberFrequency"
+        digitFrequency:
+          type: object
+          additionalProperties:
+            type: integer
+      required: [year, totalDraws, mostFrequent, leastFrequent, digitFrequency]
+
+    SyncResult:
+      type: object
+      properties:
+        inserted:
+          type: integer
+        skipped:
+          type: integer
+        total:
+          type: integer
+        message:
+          type: string
+      required: [inserted, skipped, total, message]
+
+    DigitFreqEntry:
+      type: object
+      properties:
+        digit:
+          type: string
+        count:
+          type: integer
+        percentage:
+          type: number
+      required: [digit, count, percentage]
+
+    PairFreqEntry:
+      type: object
+      properties:
+        pair:
+          type: string
+        count:
+          type: integer
+      required: [pair, count]
+
+    GapEntry:
+      type: object
+      properties:
+        number:
+          type: string
+        lastSeen:
+          type: string
+        gapDraws:
+          type: integer
+      required: [number, lastSeen, gapDraws]
+
+    AdvancedAnalytics:
+      type: object
+      properties:
+        totalDraws:
+          type: integer
+        digitFrequency:
+          type: array
+          items:
+            $ref: "#/components/schemas/DigitFreqEntry"
+        pairFrequency:
+          type: array
+          items:
+            $ref: "#/components/schemas/PairFreqEntry"
+        hotNumbers:
+          type: array
+          items:
+            $ref: "#/components/schemas/NumberFrequency"
+        coldNumbers:
+          type: array
+          items:
+            $ref: "#/components/schemas/NumberFrequency"
+        oddEven:
+          type: object
+          properties:
+            odd:
+              type: integer
+            even:
+              type: integer
+            oddPct:
+              type: number
+            evenPct:
+              type: number
+          required: [odd, even, oddPct, evenPct]
+        bigSmall:
+          type: object
+          properties:
+            big:
+              type: integer
+            small:
+              type: integer
+            bigPct:
+              type: number
+            smallPct:
+              type: number
+          required: [big, small, bigPct, smallPct]
+        missingNumbers:
+          type: array
+          items:
+            type: string
+        totalMissingCount:
+          type: integer
+        gapDistribution:
+          type: array
+          items:
+            $ref: "#/components/schemas/GapEntry"
+        repeatNumbers:
+          type: array
+          items:
+            $ref: "#/components/schemas/NumberFrequency"
+        trendNumbers:
+          type: array
+          items:
+            $ref: "#/components/schemas/NumberFrequency"
+      required:
+        - totalDraws
+        - digitFrequency
+        - pairFrequency
+        - hotNumbers
+        - coldNumbers
+        - oddEven
+        - bigSmall
+        - missingNumbers
+        - totalMissingCount
+        - gapDistribution
+        - repeatNumbers
+        - trendNumbers
+
+    HeatmapData:
+      type: object
+      properties:
+        positions:
+          type: array
+          items:
+            type: object
+            properties:
+              position:
+                type: integer
+              label:
+                type: string
+              digits:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    digit:
+                      type: string
+                    count:
+                      type: integer
+                    pct:
+                      type: number
+                  required: [digit, count, pct]
+            required: [position, label, digits]
+        totalNumbers:
+          type: integer
+      required: [positions, totalNumbers]
+
+    MarkovData:
+      type: object
+      properties:
+        matrix:
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties:
+              type: number
+        topTransitions:
+          type: array
+          items:
+            type: object
+            properties:
+              from:
+                type: string
+              to:
+                type: string
+              probability:
+                type: number
+            required: [from, to, probability]
+        totalTransitions:
+          type: integer
+      required: [matrix, topTransitions, totalTransitions]
+
+    EngineScore:
+      type: object
+      properties:
+        name:
+          type: string
+        prediction:
+          type: string
+        weight:
+          type: number
+        score:
+          type: number
+      required: [name, prediction, weight, score]
+
+    PredictionResult:
+      type: object
+      properties:
+        prediction:
+          type: string
+        confidence:
+          type: number
+        period:
+          type: string
+        engines:
+          type: array
+          items:
+            $ref: "#/components/schemas/EngineScore"
+        topCandidates:
+          type: array
+          items:
+            type: object
+            properties:
+              number:
+                type: string
+              score:
+                type: number
+            required: [number, score]
+        generatedAt:
+          type: string
+      required: [prediction, confidence, period, engines, topCandidates, generatedAt]
+
+    PredictionRecord:
+      type: object
+      properties:
+        id:
+          type: integer
+        date:
+          type: string
+        period:
+          type: string
+        prediction:
+          type: string
+        actualResult:
+          type: ["string", "null"]
+        matchedDigits:
+          type: ["integer", "null"]
+        accuracy:
+          type: ["number", "null"]
+        status:
+          type: string
+        createdAt:
+          type: string
+      required: [id, date, period, prediction, actualResult, matchedDigits, accuracy, status, createdAt]
+
+    AccuracyStats:
+      type: object
+      properties:
+        total:
+          type: integer
+        resolved:
+          type: integer
+        avgAccuracy:
+          type: number
+        avg7d:
+          type: number
+        avg30d:
+          type: number
+        engineWeights:
+          type: object
+          additionalProperties:
+            type: number
+      required: [total, resolved, avgAccuracy, avg7d, avg30d, engineWeights]
