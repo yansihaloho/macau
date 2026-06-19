@@ -115,6 +115,14 @@ const navigation: NavItem[] = [
     section: "Prediksi",
   },
   {
+    name: "Riwayat V5",
+    shortName: "Log V5",
+    href: "/riwayat-v5",
+    icon: History,
+    badge: { label: "LOG", className: "bg-violet-500/20 text-violet-400 border-violet-500/30" },
+    section: "Prediksi",
+  },
+  {
     name: "Prediksi V6",
     shortName: "V6",
     href: "/prediksi-v6",
