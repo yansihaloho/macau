@@ -228,7 +228,7 @@ function ExpandableCard({ row, onDeleted }: { row: Parsed; onDeleted: () => void
   const activeCount = bd.activeEngines ?? 0;
 
   return (
-    <div className="bg-card border border-border rounded-sm overflow-hidden">
+    <div className="bg-card border border-border rounded-xl overflow-hidden">
       {/* Header row */}
       <div
         className="flex items-start gap-3 p-4 cursor-pointer hover:bg-secondary/20 transition-colors"
@@ -331,7 +331,7 @@ function EngineAccuracyTable({ records }: { records: Parsed[] }) {
   if (sorted.length === 0) return null;
 
   return (
-    <div className="bg-card border border-border rounded-sm overflow-hidden">
+    <div className="bg-card border border-border rounded-xl overflow-hidden">
       <div className="flex items-center gap-2 px-4 py-3 border-b border-border bg-secondary/30">
         <BarChart2 className="w-4 h-4 text-violet-400" />
         <span className="font-mono text-sm font-bold text-foreground">Akurasi Per Engine</span>
@@ -396,7 +396,7 @@ function AccuracyTimeline({ records }: { records: Parsed[] }) {
 
   const max = 4;
   return (
-    <div className="bg-card border border-border rounded-sm p-4">
+    <div className="bg-card border border-border rounded-xl p-4">
       <div className="flex items-center gap-2 mb-3">
         <TrendingUp className="w-4 h-4 text-violet-400" />
         <span className="font-mono text-sm font-bold text-foreground">Tren Akurasi (30 Terakhir)</span>
@@ -500,7 +500,7 @@ export default function PredictionHistoryV5() {
       </div>
 
       {/* Controls */}
-      <div className="bg-card border border-border rounded-sm p-3 space-y-3">
+      <div className="bg-card border border-border rounded-xl p-3 space-y-3">
         <div>
           <span className="text-xs font-mono text-muted-foreground uppercase block mb-2">Sesi:</span>
           <div className="flex flex-wrap gap-1.5">
@@ -543,7 +543,7 @@ export default function PredictionHistoryV5() {
             { label: "Sebagian", value: String(partial), color: "text-amber-400" },
             { label: "Meleset", value: String(miss), color: "text-red-400" },
           ].map(({ label, value, color }) => (
-            <div key={label} className="bg-card border border-border rounded-sm p-3">
+            <div key={label} className="bg-card border border-border rounded-xl p-3 last:col-span-full sm:last:col-span-1">
               <div className="text-xs font-mono text-muted-foreground uppercase mb-1">{label}</div>
               <div className={cn("text-2xl font-mono font-bold", color)}>{value}</div>
             </div>
@@ -553,7 +553,7 @@ export default function PredictionHistoryV5() {
 
       {/* Win/loss bar */}
       {resolved.length > 0 && (
-        <div className="bg-card border border-border rounded-sm p-4">
+        <div className="bg-card border border-border rounded-xl p-4">
           <div className="text-xs font-mono text-muted-foreground uppercase mb-3">Distribusi Hasil ({resolved.length} resolved)</div>
           <div className="flex h-4 rounded-sm overflow-hidden gap-0.5">
             {exact > 0 && (
@@ -585,7 +585,7 @@ export default function PredictionHistoryV5() {
       {data && <EngineAccuracyTable records={data} />}
 
       {error && (
-        <div className="bg-destructive/10 border border-destructive/30 rounded-sm p-4 text-destructive font-mono text-sm">
+        <div className="bg-destructive/10 border border-destructive/30 rounded-xl p-4 text-destructive font-mono text-sm">
           {error}
         </div>
       )}
@@ -600,7 +600,7 @@ export default function PredictionHistoryV5() {
       {data && (
         <>
           {data.length === 0 && (
-            <div className="bg-card border border-border rounded-sm p-12 text-center">
+            <div className="bg-card border border-border rounded-xl p-12 text-center">
               <Bot className="w-8 h-8 text-muted-foreground/30 mx-auto mb-3" />
               <div className="text-muted-foreground font-mono text-sm">
                 Belum ada riwayat prediksi V5.

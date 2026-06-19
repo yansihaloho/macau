@@ -234,7 +234,7 @@ export default function PredictionHistory() {
             { label: "Sebagian", value: String(partial), color: "text-amber-400" },
             { label: "Meleset", value: String(miss), color: "text-red-400" },
           ].map(({ label, value, color }) => (
-            <div key={label} className="bg-card border border-border rounded-sm p-3">
+            <div key={label} className="bg-card border border-border rounded-xl p-3">
               <div className="text-xs font-mono text-muted-foreground uppercase mb-1">{label}</div>
               <div className={cn("text-2xl font-mono font-bold", color)}>{value}</div>
             </div>
@@ -243,7 +243,7 @@ export default function PredictionHistory() {
       )}
 
       {error && (
-        <div className="bg-destructive/10 border border-destructive/30 rounded-sm p-4 text-destructive font-mono text-sm">
+        <div className="bg-destructive/10 border border-destructive/30 rounded-xl p-4 text-destructive font-mono text-sm">
           {error}
         </div>
       )}
@@ -257,7 +257,7 @@ export default function PredictionHistory() {
       {data && (
         <>
           {data.length === 0 && (
-            <div className="bg-card border border-border rounded-sm p-12 text-center text-muted-foreground font-mono text-sm">
+            <div className="bg-card border border-border rounded-xl p-12 text-center text-muted-foreground font-mono text-sm">
               Belum ada riwayat prediksi V4.
             </div>
           )}
@@ -265,7 +265,7 @@ export default function PredictionHistory() {
           {/* Mobile: card list */}
           <div className="md:hidden space-y-2">
             {data.map((row) => (
-              <div key={row.id} className="bg-card border border-border rounded-sm p-4">
+              <div key={row.id} className="bg-card border border-border rounded-xl p-4">
                 <div className="flex items-start justify-between mb-3">
                   <div>
                     <div className="font-mono text-xs text-muted-foreground">{row.date} · {row.period} WIB</div>
@@ -299,7 +299,7 @@ export default function PredictionHistory() {
           </div>
 
           {/* Desktop: table */}
-          <div className="hidden md:block bg-card border border-border rounded-sm overflow-hidden">
+          <div className="hidden md:block bg-card border border-border rounded-xl overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full text-sm font-mono">
                 <thead>

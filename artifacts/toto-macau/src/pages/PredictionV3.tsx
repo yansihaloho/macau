@@ -280,22 +280,21 @@ function Countdown() {
     return () => clearInterval(t);
   }, []);
   return (
-    <div className="flex items-center gap-3 bg-card border border-border rounded-sm px-4 py-2.5 flex-wrap">
-      <Clock className="w-4 h-4 text-primary shrink-0" />
-      <div className="font-mono text-xs">
-        <span className="text-muted-foreground">WIB: </span>
-        <span className="text-foreground font-bold">{wibTime}</span>
+    <div className="bg-card border border-border rounded-xl px-4 py-2.5 flex flex-col sm:flex-row sm:items-center gap-y-1 gap-x-3">
+      <div className="flex items-center gap-2">
+        <Clock className="w-4 h-4 text-primary shrink-0" />
+        <div className="font-mono text-xs">
+          <span className="text-muted-foreground">WIB: </span>
+          <span className="text-foreground font-bold">{wibTime}</span>
+        </div>
       </div>
-      <div className="w-px h-4 bg-border" />
       <div className="font-mono text-xs">
         <span className="text-muted-foreground">Sesi berikutnya </span>
         <span className="text-primary font-bold">{info.period}</span>
         <span className="text-muted-foreground"> dalam </span>
         <span className="text-amber-400 font-bold tabular-nums">{formatCountdown(info.secondsUntil)}</span>
       </div>
-      <div className="ml-auto">
-        <span className="text-[10px] font-mono text-muted-foreground/40">Prediksi auto-refresh tiap 5 menit</span>
-      </div>
+      <span className="hidden sm:block ml-auto text-[10px] font-mono text-muted-foreground/40">Auto-refresh tiap 5 menit</span>
     </div>
   );
 }
@@ -358,21 +357,21 @@ export default function PredictionV3() {
     <div className="space-y-5 pb-6">
       {/* Header */}
       <div className="flex items-start justify-between gap-3 flex-wrap">
-        <div>
-          <div className="flex items-center gap-2 mb-1">
-            <Brain className="w-5 h-5 text-primary" />
-            <h1 className="text-2xl font-mono font-bold">Smart Prediction AI V3</h1>
-            <span className="text-[10px] font-mono bg-primary/20 text-primary px-2 py-0.5 rounded border border-primary/30">18 ENGINES</span>
+        <div className="min-w-0 flex-1">
+          <div className="flex items-center gap-2 mb-1 flex-wrap">
+            <Brain className="w-5 h-5 text-primary shrink-0" />
+            <h1 className="text-lg sm:text-2xl font-mono font-bold">Smart Prediction AI V3</h1>
+            <span className="text-[10px] font-mono bg-primary/20 text-primary px-2 py-0.5 rounded-lg border border-primary/30 shrink-0">18 ENGINES</span>
           </div>
-          <p className="text-sm text-muted-foreground font-mono">
-            100% data historis 2025–2026 · Adaptive weights · Anti-overfitting · Explainable AI
+          <p className="text-xs sm:text-sm text-muted-foreground font-mono leading-relaxed">
+            100% data historis · Adaptive weights · Anti-overfitting
           </p>
         </div>
         <div className="flex items-center gap-2">
           <button
             onClick={() => runPrediction(period)}
             disabled={loading}
-            className="flex items-center gap-1.5 px-3 py-1.5 bg-secondary border border-border font-mono text-xs rounded-sm hover:bg-secondary/70 disabled:opacity-50 transition-colors"
+            className="flex items-center gap-1.5 px-3 py-1.5 bg-secondary border border-border font-mono text-xs rounded-xl hover:bg-secondary/70 disabled:opacity-50 transition-colors"
           >
             <RefreshCw className={cn("w-3.5 h-3.5", loading && "animate-spin")} />
             Refresh
@@ -389,7 +388,7 @@ export default function PredictionV3() {
       <Countdown />
 
       {/* Session picker */}
-      <div className="bg-card border border-border rounded-sm p-3">
+      <div className="bg-card border border-border rounded-xl p-3">
         <div className="flex flex-wrap gap-2 items-center">
           <span className="text-xs font-mono text-muted-foreground uppercase tracking-wider mr-1">Sesi:</span>
           {WIB_SESSIONS.map((p) => {
@@ -397,11 +396,11 @@ export default function PredictionV3() {
             return (
               <button key={p} onClick={() => setPeriod(p)}
                 className={cn(
-                  "relative px-3 py-1 text-xs font-mono rounded-sm border transition-colors",
+                  "relative px-3 py-1 text-xs font-mono rounded-lg border transition-colors",
                   period === p ? "bg-primary/10 border-primary text-primary" : "border-border text-muted-foreground hover:border-primary/50 hover:text-foreground"
                 )}>
                 {p}
-                {isNext && <span className="absolute -top-1.5 -right-1.5 w-2 h-2 rounded-full bg-primary animate-pulse" />}
+                {isNext && <span className="absolute top-0.5 right-0.5 w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />}
               </button>
             );
           })}
@@ -409,14 +408,14 @@ export default function PredictionV3() {
       </div>
 
       {error && (
-        <div className="bg-rose-500/10 border border-rose-500/30 rounded-sm p-3 text-rose-400 text-xs font-mono">
+        <div className="bg-rose-500/10 border border-rose-500/30 rounded-xl p-3 text-rose-400 text-xs font-mono">
           {error}
         </div>
       )}
 
       {/* Loading */}
       {loading && (
-        <div className="bg-card border border-border rounded-sm p-6 text-center">
+        <div className="bg-card border border-border rounded-xl p-6 text-center">
           <div className="font-mono text-sm text-muted-foreground animate-pulse space-y-1">
             <p>⚙ Menjalankan 18 engine analisis untuk sesi {period}...</p>
             <p className="text-xs">Markov · Poisson · Bayesian · HMM · Entropy · dan 13 lainnya</p>
@@ -428,7 +427,7 @@ export default function PredictionV3() {
       {hasData && !loading && (
         <div className="space-y-4">
           {/* Signal status */}
-          <div className={cn("border rounded-sm p-4", result.noSignal ? "bg-rose-500/5 border-rose-500/30" : "bg-primary/5 border-primary/30")}>
+          <div className={cn("border rounded-xl p-4", result.noSignal ? "bg-rose-500/5 border-rose-500/30" : "bg-primary/5 border-primary/30")}>
             <div className="flex items-center gap-3 mb-3 flex-wrap">
               {result.noSignal
                 ? <XCircle className="w-6 h-6 text-rose-500" />
@@ -479,7 +478,7 @@ export default function PredictionV3() {
           </div>
 
           {/* Confidence */}
-          <div className="bg-card border border-border rounded-sm p-4">
+          <div className="bg-card border border-border rounded-xl p-4">
             <div className="flex items-center gap-2 mb-3">
               <Shield className="w-4 h-4 text-primary" />
               <h2 className="text-sm font-mono font-bold">Confidence Breakdown</h2>
@@ -489,7 +488,7 @@ export default function PredictionV3() {
 
           {/* Top candidates + BBFS */}
           {result.topCandidates.length > 0 && (
-            <div className="bg-card border border-border rounded-sm p-4">
+            <div className="bg-card border border-border rounded-xl p-4">
               <div className="flex items-center gap-2 mb-3">
                 <TrendingUp className="w-4 h-4 text-primary" />
                 <h2 className="text-sm font-mono font-bold">Top Kandidat Ensemble</h2>
@@ -525,7 +524,7 @@ export default function PredictionV3() {
 
           {/* Digit explanations */}
           {result.digitExplanations.some((e) => e.length > 0) && (
-            <div className="bg-card border border-border rounded-sm p-4">
+            <div className="bg-card border border-border rounded-xl p-4">
               <div className="flex items-center gap-2 mb-3">
                 <Activity className="w-4 h-4 text-primary" />
                 <h2 className="text-sm font-mono font-bold">Explainable AI — Analisis Per Digit</h2>
@@ -540,7 +539,7 @@ export default function PredictionV3() {
 
           {/* Engine table */}
           {result.engines.length > 0 && (
-            <div className="bg-card border border-border rounded-sm p-4">
+            <div className="bg-card border border-border rounded-xl p-4">
               <div className="flex items-center gap-2 mb-3">
                 <Zap className="w-4 h-4 text-primary" />
                 <h2 className="text-sm font-mono font-bold">Detail 18 Engine</h2>
@@ -551,7 +550,7 @@ export default function PredictionV3() {
 
           {/* Backtest */}
           {result.backtest && (
-            <div className="bg-card border border-border rounded-sm p-4">
+            <div className="bg-card border border-border rounded-xl p-4">
               <div className="flex items-center gap-2 mb-3">
                 <Shield className="w-4 h-4 text-primary" />
                 <h2 className="text-sm font-mono font-bold">Backtest Results</h2>

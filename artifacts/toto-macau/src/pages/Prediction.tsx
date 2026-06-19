@@ -59,13 +59,14 @@ function Countdown() {
     return () => clearInterval(t);
   }, []);
   return (
-    <div className="flex items-center gap-3 bg-card border border-border rounded-sm px-4 py-2">
-      <Clock className="w-4 h-4 text-primary shrink-0" />
-      <div className="font-mono text-xs">
-        <span className="text-muted-foreground">Waktu WIB: </span>
-        <span className="text-foreground">{wibTime}</span>
+    <div className="bg-card border border-border rounded-xl px-4 py-2.5 flex flex-col sm:flex-row sm:items-center gap-y-1 gap-x-3">
+      <div className="flex items-center gap-2">
+        <Clock className="w-4 h-4 text-primary shrink-0" />
+        <div className="font-mono text-xs">
+          <span className="text-muted-foreground">WIB: </span>
+          <span className="text-foreground font-medium">{wibTime}</span>
+        </div>
       </div>
-      <div className="w-px h-4 bg-border" />
       <div className="font-mono text-xs">
         <span className="text-muted-foreground">Sesi berikutnya </span>
         <span className="text-primary font-bold">{info.period}</span>
@@ -154,13 +155,13 @@ export default function Prediction() {
       <div className="flex flex-col md:flex-row md:items-start justify-between gap-3">
         <div>
           <h1 className="text-xl sm:text-2xl font-mono font-bold tracking-tight">AI PREDICTION ENGINE</h1>
-          <p className="text-muted-foreground font-mono text-sm mt-1">Markov · Frequency · Gap · Trend · Cycle · Prediksi otomatis per sesi</p>
+          <p className="text-muted-foreground font-mono text-xs sm:text-sm mt-1 leading-relaxed">Markov · Frequency · Gap · Trend · Cycle · Auto-predict per sesi</p>
         </div>
         <div className="flex items-center gap-2 shrink-0">
           <button
             onClick={() => { fetchPrediction(period); fetchHistory(); }}
             disabled={loading}
-            className="flex items-center gap-1.5 px-3 py-1.5 bg-secondary border border-border font-mono text-xs rounded-sm hover:bg-secondary/70 disabled:opacity-50 transition-colors"
+            className="flex items-center gap-1.5 px-3 py-1.5 bg-secondary border border-border font-mono text-xs rounded-xl hover:bg-secondary/70 disabled:opacity-50 transition-colors"
           >
             <RefreshCw className={cn("w-3.5 h-3.5", loading && "animate-spin")} />
             Refresh
@@ -175,7 +176,7 @@ export default function Prediction() {
       <Countdown />
 
       {/* Session picker */}
-      <div className="bg-card border border-border rounded-sm p-3">
+      <div className="bg-card border border-border rounded-xl p-3">
         <div className="flex flex-wrap gap-2 items-center">
           <span className="text-xs font-mono text-muted-foreground uppercase tracking-wider mr-1">Pilih sesi:</span>
           {WIB_SESSIONS.map((s) => {
@@ -185,7 +186,7 @@ export default function Prediction() {
                 key={s}
                 onClick={() => setPeriod(s)}
                 className={cn(
-                  "relative px-3 py-1 text-xs font-mono rounded-sm border transition-colors",
+                  "relative px-3 py-1 text-xs font-mono rounded-lg border transition-colors",
                   period === s
                     ? "border-primary bg-primary/10 text-primary"
                     : "border-border text-muted-foreground hover:border-primary/50 hover:text-foreground"
@@ -193,7 +194,7 @@ export default function Prediction() {
               >
                 {s}
                 {isNext && (
-                  <span className="absolute -top-1.5 -right-1.5 w-2 h-2 rounded-full bg-primary animate-pulse" />
+                  <span className="absolute top-0.5 right-0.5 w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
                 )}
               </button>
             );
@@ -205,7 +206,7 @@ export default function Prediction() {
       </div>
 
       {error && (
-        <div className="bg-rose-500/10 border border-rose-500/30 rounded-sm p-3 text-rose-400 text-xs font-mono">
+        <div className="bg-rose-500/10 border border-rose-500/30 rounded-xl p-3 text-rose-400 text-xs font-mono">
           {error}
         </div>
       )}
@@ -235,13 +236,12 @@ export default function Prediction() {
             ) : pred ? (
               <div className="flex flex-col items-center gap-5">
                 <div className="text-center">
-                  <div className="font-mono text-[72px] md:text-[96px] font-bold text-primary tracking-[0.2em] drop-shadow-[0_0_30px_rgba(245,158,11,0.5)] leading-none">
+                  <div className="font-mono text-[44px] sm:text-[64px] md:text-[88px] font-bold text-primary tracking-[0.12em] sm:tracking-[0.18em] drop-shadow-[0_0_30px_rgba(245,158,11,0.5)] leading-none overflow-hidden">
                     {pred.prediction}
                   </div>
-                  <div className="font-mono text-sm text-muted-foreground mt-3">
-                    Sesi: <span className="text-foreground">{pred.period} WIB</span>
-                    &nbsp;·&nbsp;
-                    Confidence: <span className="text-primary font-bold">{Math.round(pred.confidence * 100)}%</span>
+                  <div className="font-mono text-xs sm:text-sm text-muted-foreground mt-3 flex flex-wrap justify-center gap-x-3 gap-y-0.5">
+                    <span>Sesi: <span className="text-foreground">{pred.period} WIB</span></span>
+                    <span>Confidence: <span className="text-primary font-bold">{Math.round(pred.confidence * 100)}%</span></span>
                   </div>
                   <div className="font-mono text-[10px] text-muted-foreground/40 mt-1">
                     Digenerate: {new Date(pred.generatedAt).toLocaleString("id-ID")}

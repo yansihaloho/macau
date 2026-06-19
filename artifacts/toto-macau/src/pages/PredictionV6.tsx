@@ -207,43 +207,43 @@ export default function PredictionV6() {
   }));
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white">
-      {/* Header */}
-      <div className="sticky top-0 z-20 bg-[#0a0a0a]/95 backdrop-blur border-b border-white/10 px-4 py-3">
-        <div className="max-w-5xl mx-auto flex items-center justify-between gap-3">
-          <div className="flex items-center gap-3">
-            <div className="p-2 rounded-lg bg-cyan-500/10 border border-cyan-500/20">
-              <Cpu className="w-5 h-5 text-cyan-400" />
-            </div>
-            <div>
-              <h1 className="text-base font-black tracking-tight text-white">
+    <div className="space-y-5 pb-6 text-white">
+      {/* Page Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+        <div className="flex items-center gap-3 min-w-0">
+          <div className="p-2 rounded-lg bg-cyan-500/10 border border-cyan-500/20 shrink-0">
+            <Cpu className="w-5 h-5 text-cyan-400" />
+          </div>
+          <div className="min-w-0">
+            <div className="flex flex-wrap items-center gap-2">
+              <h1 className="text-xl font-black tracking-tight text-white">
                 PREDIKSI <span className="text-cyan-400">V6</span>
-                <span className="ml-2 text-[10px] font-bold uppercase tracking-widest text-cyan-500/70 border border-cyan-500/20 px-1.5 py-0.5 rounded">Quant Research</span>
               </h1>
-              <p className="text-xs text-white/40">20 AI Engines · Dynamic Weights · Self-Learning</p>
+              <span className="text-[10px] font-bold uppercase tracking-widest text-cyan-500/70 border border-cyan-500/20 px-1.5 py-0.5 rounded-md shrink-0">QUANT RESEARCH</span>
             </div>
+            <p className="text-xs text-white/40 mt-0.5">20 AI Engines · Dynamic Weights · Self-Learning</p>
           </div>
-          <div className="flex items-center gap-2">
-            <select
-              value={period}
-              onChange={e => setPeriod(e.target.value)}
-              className="bg-white/5 border border-white/10 text-white text-sm rounded-lg px-3 py-1.5 focus:outline-none focus:border-cyan-500/50"
-            >
-              {PERIODS.map(p => <option key={p} value={p}>{p} WIB</option>)}
-            </select>
-            <button
-              onClick={generate}
-              disabled={loading}
-              className="flex items-center gap-1.5 bg-cyan-500 hover:bg-cyan-400 disabled:opacity-50 text-black text-sm font-bold px-4 py-1.5 rounded-lg transition-colors"
-            >
-              <Sparkles className="w-3.5 h-3.5" />
-              {loading ? "Analisis…" : "Generate V6"}
-            </button>
-          </div>
+        </div>
+        <div className="flex items-center gap-2 sm:ml-auto">
+          <select
+            value={period}
+            onChange={e => setPeriod(e.target.value)}
+            className="flex-1 sm:flex-none bg-white/5 border border-white/10 text-white text-sm rounded-lg px-3 py-2 focus:outline-none focus:border-cyan-500/50"
+          >
+            {PERIODS.map(p => <option key={p} value={p}>{p} WIB</option>)}
+          </select>
+          <button
+            onClick={generate}
+            disabled={loading}
+            className="flex items-center gap-1.5 bg-cyan-500 hover:bg-cyan-400 disabled:opacity-50 text-black text-sm font-bold px-4 py-2 rounded-lg transition-colors shrink-0"
+          >
+            <Sparkles className="w-3.5 h-3.5" />
+            {loading ? "Analisis…" : "Generate V6"}
+          </button>
         </div>
       </div>
 
-      <div className="max-w-5xl mx-auto px-4 py-6 space-y-6">
+      <div className="space-y-6">
         {error && (
           <div className="bg-red-500/10 border border-red-500/30 rounded-xl p-4 flex items-start gap-3">
             <AlertTriangle className="w-4 h-4 text-red-400 mt-0.5 flex-shrink-0" />
@@ -261,7 +261,7 @@ export default function PredictionV6() {
               <p className="text-white/60 font-medium">V6 Quant Research Edition</p>
               <p className="text-white/30 text-sm mt-1">20 engines · Pilih sesi, lalu klik Generate V6</p>
             </div>
-            <div className="grid grid-cols-4 gap-3 mt-4 text-center">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-4 text-center w-full max-w-xs mx-auto">
               {["Markov V3", "HMM", "Bayesian", "Adaptive"].map(e => (
                 <div key={e} className="bg-cyan-500/5 border border-cyan-500/10 rounded-lg px-3 py-2">
                   <Zap className="w-3.5 h-3.5 text-cyan-400 mx-auto mb-1" />
