@@ -496,19 +496,21 @@ export default function PredictionV4() {
 
       {/* Session picker */}
       <div className="bg-card border border-border rounded-xl p-3">
-        <div className="flex flex-wrap gap-2 items-center">
-          <span className="text-xs font-mono text-muted-foreground uppercase tracking-wider mr-1">Sesi:</span>
+        <div>
+          <span className="text-xs font-mono text-muted-foreground uppercase tracking-wider block mb-2">Sesi:</span>
+          <div className="grid grid-cols-3 gap-2">
           {WIB_SESSIONS.map((p) => {
             const isNext = p === getNextSessionInfo().period;
             return (
               <button key={p} onClick={() => setPeriod(p)}
-                className={cn("relative px-3 py-1 text-xs font-mono rounded-lg border transition-colors",
+                className={cn("relative px-3 py-1.5 text-xs font-mono rounded-lg border transition-colors text-center",
                   period === p ? "bg-primary/10 border-primary text-primary" : "border-border text-muted-foreground hover:border-primary/50 hover:text-foreground")}>
                 {p}
                 {isNext && <span className="absolute top-0.5 right-0.5 w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />}
               </button>
             );
           })}
+          </div>
         </div>
       </div>
 

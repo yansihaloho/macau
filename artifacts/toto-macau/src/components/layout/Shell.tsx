@@ -270,7 +270,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
       </header>
 
       {/* ── Main Content ────────────────────────────────────────────────── */}
-      <div className="flex-1 md:pl-60 pt-14 md:pt-0 pb-20 md:pb-0">
+      <div className="flex-1 md:pl-60 pt-14 md:pt-0 pb-20 md:pb-0 overflow-x-hidden">
         <main className="p-4 md:p-6 lg:p-8 max-w-6xl mx-auto w-full">
           {children}
         </main>

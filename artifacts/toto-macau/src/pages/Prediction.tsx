@@ -177,8 +177,9 @@ export default function Prediction() {
 
       {/* Session picker */}
       <div className="bg-card border border-border rounded-xl p-3">
-        <div className="flex flex-wrap gap-2 items-center">
-          <span className="text-xs font-mono text-muted-foreground uppercase tracking-wider mr-1">Pilih sesi:</span>
+        <div>
+          <span className="text-xs font-mono text-muted-foreground uppercase tracking-wider block mb-2">Sesi:</span>
+          <div className="grid grid-cols-3 gap-2">
           {WIB_SESSIONS.map((s) => {
             const isNext = s === getNextSessionInfo().period;
             return (
@@ -186,7 +187,7 @@ export default function Prediction() {
                 key={s}
                 onClick={() => setPeriod(s)}
                 className={cn(
-                  "relative px-3 py-1 text-xs font-mono rounded-lg border transition-colors",
+                  "relative px-3 py-1.5 text-xs font-mono rounded-lg border transition-colors text-center",
                   period === s
                     ? "border-primary bg-primary/10 text-primary"
                     : "border-border text-muted-foreground hover:border-primary/50 hover:text-foreground"
@@ -199,6 +200,7 @@ export default function Prediction() {
               </button>
             );
           })}
+          </div>
           <span className="ml-auto text-[10px] font-mono text-muted-foreground/40">
             ● = sesi aktif berikutnya
           </span>
@@ -235,11 +237,11 @@ export default function Prediction() {
               </div>
             ) : pred ? (
               <div className="flex flex-col items-center gap-5">
-                <div className="text-center">
+                <div className="text-center w-full">
                   <div className="font-mono text-[44px] sm:text-[64px] md:text-[88px] font-bold text-primary tracking-[0.12em] sm:tracking-[0.18em] drop-shadow-[0_0_30px_rgba(245,158,11,0.5)] leading-none overflow-hidden">
                     {pred.prediction}
                   </div>
-                  <div className="font-mono text-xs sm:text-sm text-muted-foreground mt-3 flex flex-wrap justify-center gap-x-3 gap-y-0.5">
+                  <div className="font-mono text-xs sm:text-sm text-muted-foreground mt-3 w-full flex flex-wrap justify-center gap-x-3 gap-y-0.5">
                     <span>Sesi: <span className="text-foreground">{pred.period} WIB</span></span>
                     <span>Confidence: <span className="text-primary font-bold">{Math.round(pred.confidence * 100)}%</span></span>
                   </div>
