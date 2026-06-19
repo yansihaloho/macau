@@ -16,6 +16,7 @@ import TodayPrediction from "@/pages/TodayPrediction";
 import PredictionV5 from "@/pages/PredictionV5";
 import PredictionV6 from "@/pages/PredictionV6";
 import PredictionHistoryV5 from "@/pages/PredictionHistoryV5";
+import PredictionHistoryV6 from "@/pages/PredictionHistoryV6";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -42,6 +43,7 @@ function Router() {
         <Route path="/prediksi-v5" component={PredictionV5} />
         <Route path="/riwayat-v5" component={PredictionHistoryV5} />
         <Route path="/prediksi-v6" component={PredictionV6} />
+        <Route path="/riwayat-v6" component={PredictionHistoryV6} />
         <Route component={NotFound} />
       </Switch>
     </Shell>

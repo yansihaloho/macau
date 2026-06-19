@@ -130,6 +130,14 @@ const navigation: NavItem[] = [
     badge: { label: "V6 ✦✦", className: "bg-cyan-500/20 text-cyan-400 border-cyan-500/30" },
     section: "Prediksi",
   },
+  {
+    name: "Riwayat V6",
+    shortName: "Log V6",
+    href: "/riwayat-v6",
+    icon: History,
+    badge: { label: "LOG", className: "bg-cyan-500/20 text-cyan-400 border-cyan-500/30" },
+    section: "Prediksi",
+  },
 ];
 
 // Primary 4 tabs shown in mobile bottom bar
