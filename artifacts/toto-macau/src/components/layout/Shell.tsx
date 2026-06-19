@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
 import {
   Activity, BarChart3, Brain, Database, LayoutDashboard,
-  FlaskConical, Sparkles, ClipboardList, X, Home,
-  Zap, TrendingUp, AlignJustify, History, ChevronRight, CalendarDays, Bot, Cpu,
+  FlaskConical, Sparkles, X,
+  Zap, Bot, Cpu, History, CalendarDays, AlignJustify, ChevronRight,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -68,7 +68,7 @@ const navigation: NavItem[] = [
   },
   {
     name: "Prediksi AI",
-    shortName: "AI",
+    shortName: "AI V1",
     href: "/prediksi",
     icon: Brain,
     badge: { label: "V1", className: "bg-sky-500/20 text-sky-400 border-sky-500/30" },
@@ -92,7 +92,7 @@ const navigation: NavItem[] = [
   },
   {
     name: "Riwayat V4",
-    shortName: "Riwayat",
+    shortName: "Log V4",
     href: "/riwayat-v4",
     icon: History,
     badge: { label: "LOG", className: "bg-amber-500/20 text-amber-400 border-amber-500/30" },
@@ -140,25 +140,23 @@ const navigation: NavItem[] = [
   },
 ];
 
-// Primary 4 tabs shown in mobile bottom bar
+// Bottom tab bar — 4 key pages
 const BOTTOM_TABS: NavItem[] = [
-  navigation[0]!,
-  navigation[1]!,
-  navigation[7]!,
-  navigation[3]!,
+  navigation[0]!,  // Dashboard
+  navigation[9]!,  // Hari Ini
+  navigation[7]!,  // V4
+  navigation[1]!,  // Data 2026
 ];
 
-// "More" drawer items = everything not in bottom tabs
-const DRAWER_ITEMS: NavItem[] = navigation.filter(
-  (item) => !BOTTOM_TABS.includes(item)
-);
+const DRAWER_ITEMS = navigation.filter((item) => !BOTTOM_TABS.includes(item));
 
-// ─── Badge component ──────────────────────────────────────────────────────────
+// ─── Helpers ──────────────────────────────────────────────────────────────────
 
-function NavBadge({ badge }: { badge: Badge }) {
+function NavBadge({ badge, small }: { badge: Badge; small?: boolean }) {
   return (
     <span className={cn(
-      "inline-flex items-center px-1.5 py-0.5 rounded text-[9px] font-mono font-bold border leading-none",
+      "inline-flex items-center px-1.5 py-0.5 rounded text-[9px] font-mono font-bold border leading-none shrink-0",
+      small && "px-1 text-[8px]",
       badge.className
     )}>
       {badge.label}
@@ -166,11 +164,9 @@ function NavBadge({ badge }: { badge: Badge }) {
   );
 }
 
-// ─── Section label in sidebar ─────────────────────────────────────────────────
-
 function SectionLabel({ label }: { label: string }) {
   return (
-    <div className="px-3 pt-5 pb-1.5 text-[10px] font-mono text-muted-foreground/50 uppercase tracking-widest first:pt-0">
+    <div className="px-3 pt-5 pb-1.5 text-[10px] font-mono text-muted-foreground/40 uppercase tracking-widest first:pt-2">
       {label}
     </div>
   );
@@ -178,30 +174,19 @@ function SectionLabel({ label }: { label: string }) {
 
 // ─── Shell ────────────────────────────────────────────────────────────────────
 
-interface LayoutProps {
-  children: React.ReactNode;
-}
-
-export function Shell({ children }: LayoutProps) {
+export function Shell({ children }: { children: React.ReactNode }) {
   const [location] = useLocation();
   const [drawerOpen, setDrawerOpen] = useState(false);
 
-  // Close drawer on route change
   useEffect(() => { setDrawerOpen(false); }, [location]);
 
-  // Lock body scroll when drawer is open
   useEffect(() => {
-    if (drawerOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
+    document.body.style.overflow = drawerOpen ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
   }, [drawerOpen]);
 
   const currentPage = navigation.find((n) => n.href === location);
 
-  // Group navigation by section for sidebar
   const sections = ["Overview", "Data", "Analitik", "Prediksi"] as const;
   const grouped = sections.map((section) => ({
     section,
@@ -212,20 +197,20 @@ export function Shell({ children }: LayoutProps) {
     <div className="min-h-screen flex w-full bg-background text-foreground dark">
 
       {/* ── Desktop Sidebar ─────────────────────────────────────────────── */}
-      <aside className="hidden md:flex flex-col fixed inset-y-0 left-0 z-50 w-64 border-r border-border bg-card">
+      <aside className="hidden md:flex flex-col fixed inset-y-0 left-0 z-50 w-60 border-r border-border/60 bg-sidebar">
         {/* Logo */}
-        <div className="h-16 flex items-center gap-3 px-5 border-b border-border shrink-0">
-          <div className="w-8 h-8 rounded-sm bg-primary/10 border border-primary/30 flex items-center justify-center">
-            <Activity className="w-4 h-4 text-primary" />
+        <div className="h-14 flex items-center gap-3 px-4 border-b border-border/60 shrink-0">
+          <div className="w-7 h-7 rounded-md bg-primary/15 border border-primary/25 flex items-center justify-center">
+            <Activity className="w-3.5 h-3.5 text-primary" />
           </div>
           <div>
-            <div className="font-mono font-bold text-base leading-none text-foreground">DATA.TOTO</div>
-            <div className="font-mono text-[10px] text-muted-foreground/50 mt-0.5">Macau 4D Analytics</div>
+            <div className="font-mono font-bold text-sm leading-none text-foreground tracking-wide">DATA.TOTO</div>
+            <div className="font-mono text-[9px] text-muted-foreground/50 mt-0.5 tracking-wider">MACAU 4D ANALYTICS</div>
           </div>
         </div>
 
         {/* Nav */}
-        <nav className="flex-1 overflow-y-auto px-3 py-4 space-y-0.5">
+        <nav className="flex-1 overflow-y-auto px-2 py-2 space-y-0.5">
           {grouped.map(({ section, items }) => (
             <div key={section}>
               <SectionLabel label={section} />
@@ -234,16 +219,15 @@ export function Shell({ children }: LayoutProps) {
                 return (
                   <Link key={item.href} href={item.href}>
                     <div className={cn(
-                      "flex items-center gap-3 px-3 py-2.5 rounded-md font-mono text-sm transition-all cursor-pointer group",
+                      "flex items-center gap-2.5 px-3 py-2 rounded-md font-mono text-sm transition-all cursor-pointer group",
                       isActive
                         ? "bg-primary/10 text-primary"
-                        : "text-muted-foreground hover:bg-secondary/60 hover:text-foreground"
+                        : "text-muted-foreground hover:bg-secondary/70 hover:text-foreground"
                     )}>
-                      <item.icon className={cn("w-4 h-4 shrink-0 transition-colors",
-                        isActive ? "text-primary" : "text-muted-foreground/60 group-hover:text-foreground")} />
-                      <span className="flex-1 truncate">{item.name}</span>
+                      <item.icon className={cn("w-4 h-4 shrink-0",
+                        isActive ? "text-primary" : "text-muted-foreground/50 group-hover:text-foreground")} />
+                      <span className="flex-1 truncate text-[13px]">{item.name}</span>
                       {item.badge && <NavBadge badge={item.badge} />}
-                      {isActive && <div className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />}
                     </div>
                   </Link>
                 );
@@ -254,58 +238,62 @@ export function Shell({ children }: LayoutProps) {
 
         {/* Footer */}
         <div className="px-4 py-3 border-t border-border/40 shrink-0">
-          <div className="font-mono text-[10px] text-muted-foreground/30 uppercase tracking-wider">
+          <div className="font-mono text-[9px] text-muted-foreground/25 uppercase tracking-wider">
             Data Engine v4.0 · 40 Engines
           </div>
         </div>
       </aside>
 
       {/* ── Mobile Top Header ───────────────────────────────────────────── */}
-      <header className="md:hidden fixed top-0 inset-x-0 z-50 h-14 border-b border-border bg-card flex items-center justify-between px-4">
+      <header className="md:hidden fixed top-0 inset-x-0 z-50 h-14 border-b border-border/60 bg-sidebar/95 backdrop-blur-md flex items-center justify-between px-4 safe-area-pt">
         <div className="flex items-center gap-2.5">
-          <div className="w-7 h-7 rounded-sm bg-primary/10 border border-primary/30 flex items-center justify-center">
+          <div className="w-7 h-7 rounded-md bg-primary/15 border border-primary/25 flex items-center justify-center shrink-0">
             <Activity className="w-3.5 h-3.5 text-primary" />
           </div>
-          <span className="font-mono font-bold text-base text-foreground">DATA.TOTO</span>
+          <div className="min-w-0">
+            {currentPage && location !== "/" ? (
+              <>
+                <div className="font-mono font-bold text-sm leading-tight text-foreground truncate">
+                  {currentPage.name}
+                </div>
+                <div className="font-mono text-[9px] text-muted-foreground/50 tracking-wider">DATA.TOTO</div>
+              </>
+            ) : (
+              <>
+                <div className="font-mono font-bold text-sm leading-none text-foreground tracking-wide">DATA.TOTO</div>
+                <div className="font-mono text-[9px] text-muted-foreground/50 mt-0.5 tracking-wider">MACAU 4D ANALYTICS</div>
+              </>
+            )}
+          </div>
         </div>
-        {currentPage?.badge && (
-          <NavBadge badge={currentPage.badge} />
-        )}
+        {currentPage?.badge && <NavBadge badge={currentPage.badge} />}
       </header>
 
       {/* ── Main Content ────────────────────────────────────────────────── */}
-      <div className="flex-1 md:pl-64 pt-14 md:pt-0 pb-20 md:pb-0">
-        <main className="p-4 md:p-8 max-w-7xl mx-auto w-full">
+      <div className="flex-1 md:pl-60 pt-14 md:pt-0 pb-20 md:pb-0">
+        <main className="p-4 md:p-6 lg:p-8 max-w-6xl mx-auto w-full">
           {children}
         </main>
       </div>
 
       {/* ── Mobile Bottom Nav ───────────────────────────────────────────── */}
-      <nav className="md:hidden fixed bottom-0 inset-x-0 z-50 bg-card border-t border-border safe-area-pb">
-        <div className="flex items-stretch h-16">
+      <nav className="md:hidden fixed bottom-0 inset-x-0 z-50 bg-sidebar/95 backdrop-blur-md border-t border-border/60 safe-area-pb">
+        <div className="flex items-stretch h-[58px]">
           {BOTTOM_TABS.map((item) => {
             const isActive = location === item.href;
             return (
               <Link key={item.href} href={item.href} className="flex-1">
                 <div className={cn(
-                  "flex flex-col items-center justify-center h-full gap-1 transition-colors relative",
-                  isActive ? "text-primary" : "text-muted-foreground/60"
+                  "flex flex-col items-center justify-center h-full gap-1 transition-colors relative px-1",
+                  isActive ? "text-primary" : "text-muted-foreground/50"
                 )}>
                   {isActive && (
-                    <div className="absolute top-0 inset-x-4 h-0.5 bg-primary rounded-b-full" />
+                    <div className="absolute top-0 inset-x-3 h-[2px] bg-primary rounded-b-full" />
                   )}
-                  <div className="relative">
-                    <item.icon className="w-5 h-5" />
-                    {item.badge && !isActive && (
-                      <span className={cn(
-                        "absolute -top-1.5 -right-2 min-w-[14px] h-3.5 px-0.5 rounded text-[8px] font-bold font-mono flex items-center justify-center border",
-                        item.badge.className
-                      )}>
-                        {item.badge.label.replace(" ★", "")}
-                      </span>
-                    )}
-                  </div>
-                  <span className={cn("text-[10px] font-mono font-medium leading-none", isActive && "text-primary")}>
+                  <item.icon className={cn("w-[22px] h-[22px] transition-transform", isActive && "scale-110")} />
+                  <span className={cn("text-[10px] font-mono font-medium leading-none",
+                    isActive ? "text-primary" : "text-muted-foreground/50"
+                  )}>
                     {item.shortName}
                   </span>
                 </div>
@@ -316,14 +304,16 @@ export function Shell({ children }: LayoutProps) {
           {/* More button */}
           <button
             className={cn(
-              "flex-1 flex flex-col items-center justify-center gap-1 transition-colors relative",
-              drawerOpen ? "text-primary" : "text-muted-foreground/60"
+              "flex-1 flex flex-col items-center justify-center gap-1 transition-colors relative px-1",
+              drawerOpen ? "text-primary" : "text-muted-foreground/50"
             )}
             onClick={() => setDrawerOpen(!drawerOpen)}
           >
-            {drawerOpen && <div className="absolute top-0 inset-x-4 h-0.5 bg-primary rounded-b-full" />}
-            <AlignJustify className="w-5 h-5" />
-            <span className="text-[10px] font-mono font-medium leading-none">Menu</span>
+            {drawerOpen && <div className="absolute top-0 inset-x-3 h-[2px] bg-primary rounded-b-full" />}
+            <AlignJustify className={cn("w-[22px] h-[22px] transition-transform", drawerOpen && "scale-110")} />
+            <span className={cn("text-[10px] font-mono font-medium leading-none",
+              drawerOpen ? "text-primary" : "text-muted-foreground/50"
+            )}>Menu</span>
           </button>
         </div>
       </nav>
@@ -331,7 +321,7 @@ export function Shell({ children }: LayoutProps) {
       {/* ── Mobile Drawer Overlay ────────────────────────────────────────── */}
       <div
         className={cn(
-          "md:hidden fixed inset-0 z-[55] bg-black/60 backdrop-blur-sm transition-opacity duration-300",
+          "md:hidden fixed inset-0 z-[55] bg-black/70 backdrop-blur-sm transition-opacity duration-200",
           drawerOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
         )}
         onClick={() => setDrawerOpen(false)}
@@ -339,53 +329,67 @@ export function Shell({ children }: LayoutProps) {
 
       {/* ── Mobile Drawer Panel ──────────────────────────────────────────── */}
       <div className={cn(
-        "md:hidden fixed inset-x-0 bottom-0 z-[60] bg-card border-t border-border rounded-t-2xl transition-transform duration-300 ease-in-out",
+        "md:hidden fixed inset-x-0 bottom-0 z-[60] bg-sidebar border-t border-border/60 rounded-t-2xl transition-transform duration-300 ease-out",
         drawerOpen ? "translate-y-0" : "translate-y-full"
       )}>
-        {/* Handle */}
-        <div className="flex justify-center pt-3 pb-1">
-          <div className="w-10 h-1 bg-border rounded-full" />
+        {/* Drag handle */}
+        <div className="flex justify-center pt-3 pb-2">
+          <div className="w-9 h-1 bg-border rounded-full" />
         </div>
 
         {/* Header */}
-        <div className="flex items-center justify-between px-4 py-3 border-b border-border/50">
+        <div className="flex items-center justify-between px-5 py-2.5 border-b border-border/50">
           <div className="font-mono text-sm font-bold text-foreground">Semua Menu</div>
-          <button onClick={() => setDrawerOpen(false)} className="text-muted-foreground hover:text-foreground p-1">
+          <button onClick={() => setDrawerOpen(false)}
+            className="text-muted-foreground hover:text-foreground p-1.5 rounded-lg hover:bg-secondary/60 transition-colors">
             <X className="w-4 h-4" />
           </button>
         </div>
 
-        {/* Drawer nav items */}
-        <div className="px-3 py-3 pb-20 grid grid-cols-1 gap-1 max-h-[60vh] overflow-y-auto">
-          {DRAWER_ITEMS.map((item) => {
-            const isActive = location === item.href;
+        {/* Items in a 2-column grid */}
+        <div className="px-4 py-3 pb-8 max-h-[70vh] overflow-y-auto">
+          {(["Data", "Analitik", "Prediksi"] as const).map((section) => {
+            const items = DRAWER_ITEMS.filter((i) => i.section === section);
+            if (items.length === 0) return null;
             return (
-              <Link key={item.href} href={item.href}>
-                <div className={cn(
-                  "flex items-center gap-3 px-4 py-3 rounded-xl font-mono text-sm transition-all cursor-pointer",
-                  isActive
-                    ? "bg-primary/10 text-primary"
-                    : "text-muted-foreground hover:bg-secondary/40 hover:text-foreground"
-                )}>
-                  <div className={cn(
-                    "w-8 h-8 rounded-lg flex items-center justify-center shrink-0",
-                    isActive ? "bg-primary/20" : "bg-secondary/60"
-                  )}>
-                    <item.icon className={cn("w-4 h-4", isActive ? "text-primary" : "text-muted-foreground")} />
-                  </div>
-                  <span className="flex-1">{item.name}</span>
-                  {item.badge && <NavBadge badge={item.badge} />}
-                  <ChevronRight className="w-4 h-4 text-muted-foreground/30 shrink-0" />
+              <div key={section} className="mb-4">
+                <div className="text-[10px] font-mono text-muted-foreground/40 uppercase tracking-widest px-1 mb-2">
+                  {section}
                 </div>
-              </Link>
+                <div className="grid grid-cols-2 gap-2">
+                  {items.map((item) => {
+                    const isActive = location === item.href;
+                    return (
+                      <Link key={item.href} href={item.href}>
+                        <div className={cn(
+                          "flex items-center gap-2.5 px-3 py-3 rounded-xl font-mono text-sm transition-all cursor-pointer",
+                          isActive
+                            ? "bg-primary/10 text-primary border border-primary/20"
+                            : "text-muted-foreground hover:bg-secondary/50 hover:text-foreground border border-transparent"
+                        )}>
+                          <div className={cn(
+                            "w-8 h-8 rounded-lg flex items-center justify-center shrink-0",
+                            isActive ? "bg-primary/20" : "bg-secondary/80"
+                          )}>
+                            <item.icon className={cn("w-4 h-4", isActive ? "text-primary" : "text-muted-foreground/70")} />
+                          </div>
+                          <div className="min-w-0 flex-1">
+                            <div className="text-[12px] font-medium leading-tight truncate">{item.name}</div>
+                            {item.badge && (
+                              <div className="mt-0.5">
+                                <NavBadge badge={item.badge} small />
+                              </div>
+                            )}
+                          </div>
+                          <ChevronRight className="w-3.5 h-3.5 text-muted-foreground/30 shrink-0" />
+                        </div>
+                      </Link>
+                    );
+                  })}
+                </div>
+              </div>
             );
           })}
-        </div>
-
-        <div className="px-4 py-3 border-t border-border/30">
-          <div className="font-mono text-[10px] text-muted-foreground/30 text-center uppercase tracking-widest">
-            Data Engine v4.0 · 40 Engines · Self-Learning
-          </div>
         </div>
       </div>
     </div>

@@ -161,7 +161,7 @@ export default function PredictionHistory() {
     : 0;
 
   return (
-    <div className="space-y-5 pb-20">
+    <div className="space-y-5 pb-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
         <div>
@@ -184,7 +184,7 @@ export default function PredictionHistory() {
       </div>
 
       {/* Controls */}
-      <div className="bg-card border border-border rounded-sm p-3 space-y-3">
+      <div className="bg-card border border-border rounded-xl p-3.5 space-y-3">
         <div>
           <span className="text-xs font-mono text-muted-foreground uppercase block mb-2">Sesi:</span>
           <div className="flex flex-wrap gap-1.5">

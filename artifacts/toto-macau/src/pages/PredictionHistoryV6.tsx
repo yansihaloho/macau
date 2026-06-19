@@ -490,7 +490,7 @@ export default function PredictionHistoryV6() {
     ? resolved.reduce((s, r) => s + (r.accuracy ?? 0), 0) / resolved.length : 0;
 
   return (
-    <div className="space-y-5 pb-20">
+    <div className="space-y-5 pb-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
         <div>

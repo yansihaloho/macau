@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600;700&display=swap');
+
 @import "tailwindcss";
 @import "tw-animate-css";
 @plugin "@tailwindcss/typography";
@@ -67,52 +69,51 @@
 }
 
 :root {
-  /* Set base to dark theme since the requirement is dark mode only */
   color-scheme: dark;
-  --background: 240 10% 4%;
-  --foreground: 0 0% 90%;
-  
-  --card: 240 10% 6%;
-  --card-foreground: 0 0% 90%;
-  --card-border: 240 10% 12%;
-  
-  --popover: 240 10% 6%;
-  --popover-foreground: 0 0% 90%;
-  --popover-border: 240 10% 12%;
-  
+  --background: 222 20% 5%;
+  --foreground: 210 20% 92%;
+
+  --card: 222 18% 8%;
+  --card-foreground: 210 20% 92%;
+  --card-border: 222 15% 14%;
+
+  --popover: 222 18% 8%;
+  --popover-foreground: 210 20% 92%;
+  --popover-border: 222 15% 14%;
+
   --primary: 43 96% 56%;
   --primary-foreground: 0 0% 10%;
   --primary-border: 43 96% 46%;
-  
-  --secondary: 240 10% 12%;
-  --secondary-foreground: 0 0% 90%;
-  --secondary-border: 240 10% 16%;
-  
-  --muted: 240 10% 12%;
-  --muted-foreground: 240 5% 65%;
-  --muted-border: 240 10% 16%;
-  
+
+  --secondary: 222 15% 13%;
+  --secondary-foreground: 210 20% 92%;
+  --secondary-border: 222 15% 18%;
+
+  --muted: 222 15% 13%;
+  --muted-foreground: 220 10% 55%;
+  --muted-border: 222 15% 18%;
+
   --accent: 43 96% 56%;
   --accent-foreground: 0 0% 10%;
   --accent-border: 43 96% 46%;
-  
+
   --destructive: 0 84% 60%;
   --destructive-foreground: 0 0% 98%;
   --destructive-border: 0 84% 50%;
-  
-  --border: 240 10% 12%;
-  --input: 240 10% 12%;
+
+  --border: 222 15% 14%;
+  --input: 222 15% 13%;
   --ring: 43 96% 56%;
-  
-  --sidebar: 240 10% 4%;
-  --sidebar-foreground: 0 0% 90%;
-  --sidebar-border: 240 10% 12%;
+
+  --sidebar: 222 22% 6%;
+  --sidebar-foreground: 210 20% 92%;
+  --sidebar-border: 222 15% 12%;
   --sidebar-primary: 43 96% 56%;
   --sidebar-primary-foreground: 0 0% 10%;
-  --sidebar-accent: 240 10% 10%;
-  --sidebar-accent-foreground: 0 0% 90%;
+  --sidebar-accent: 222 15% 10%;
+  --sidebar-accent-foreground: 210 20% 92%;
   --sidebar-ring: 43 96% 56%;
-  
+
   --chart-1: 43 96% 56%;
   --chart-2: 25 95% 53%;
   --chart-3: 15 90% 55%;
@@ -122,55 +123,44 @@
   --app-font-sans: 'Inter', system-ui, sans-serif;
   --app-font-serif: Georgia, serif;
   --app-font-mono: 'Space Mono', 'SF Mono', Consolas, Menlo, monospace;
-  --radius: 0.25rem;
+  --radius: 0.375rem;
 }
 
 .dark {
-  /* Same variables to ensure dark mode works with or without class */
-  --background: 240 10% 4%;
-  --foreground: 0 0% 90%;
-  
-  --card: 240 10% 6%;
-  --card-foreground: 0 0% 90%;
-  --card-border: 240 10% 12%;
-  
-  --popover: 240 10% 6%;
-  --popover-foreground: 0 0% 90%;
-  --popover-border: 240 10% 12%;
-  
+  --background: 222 20% 5%;
+  --foreground: 210 20% 92%;
+  --card: 222 18% 8%;
+  --card-foreground: 210 20% 92%;
+  --card-border: 222 15% 14%;
+  --popover: 222 18% 8%;
+  --popover-foreground: 210 20% 92%;
+  --popover-border: 222 15% 14%;
   --primary: 43 96% 56%;
   --primary-foreground: 0 0% 10%;
   --primary-border: 43 96% 46%;
-  
-  --secondary: 240 10% 12%;
-  --secondary-foreground: 0 0% 90%;
-  --secondary-border: 240 10% 16%;
-  
-  --muted: 240 10% 12%;
-  --muted-foreground: 240 5% 65%;
-  --muted-border: 240 10% 16%;
-  
+  --secondary: 222 15% 13%;
+  --secondary-foreground: 210 20% 92%;
+  --secondary-border: 222 15% 18%;
+  --muted: 222 15% 13%;
+  --muted-foreground: 220 10% 55%;
+  --muted-border: 222 15% 18%;
   --accent: 43 96% 56%;
   --accent-foreground: 0 0% 10%;
   --accent-border: 43 96% 46%;
-  
   --destructive: 0 84% 60%;
   --destructive-foreground: 0 0% 98%;
   --destructive-border: 0 84% 50%;
-  
-  --border: 240 10% 12%;
-  --input: 240 10% 12%;
+  --border: 222 15% 14%;
+  --input: 222 15% 13%;
   --ring: 43 96% 56%;
-  
-  --sidebar: 240 10% 4%;
-  --sidebar-foreground: 0 0% 90%;
-  --sidebar-border: 240 10% 12%;
+  --sidebar: 222 22% 6%;
+  --sidebar-foreground: 210 20% 92%;
+  --sidebar-border: 222 15% 12%;
   --sidebar-primary: 43 96% 56%;
   --sidebar-primary-foreground: 0 0% 10%;
-  --sidebar-accent: 240 10% 10%;
-  --sidebar-accent-foreground: 0 0% 90%;
+  --sidebar-accent: 222 15% 10%;
+  --sidebar-accent-foreground: 210 20% 92%;
   --sidebar-ring: 43 96% 56%;
-  
   --chart-1: 43 96% 56%;
   --chart-2: 25 95% 53%;
   --chart-3: 15 90% 55%;
@@ -181,9 +171,79 @@
 @layer base {
   * {
     @apply border-border;
+    -webkit-tap-highlight-color: transparent;
   }
-  
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
   body {
     @apply font-sans antialiased bg-background text-foreground;
+    overscroll-behavior: none;
+  }
+
+  /* Custom scrollbar — desktop only */
+  @media (pointer: fine) {
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: hsl(var(--border)); border-radius: 99px; }
+    ::-webkit-scrollbar-thumb:hover { background: hsl(var(--muted-foreground)); }
+  }
+
+  /* Safe area padding for bottom nav on iOS */
+  .safe-area-pb {
+    padding-bottom: max(env(safe-area-inset-bottom), 0px);
+  }
+  .safe-area-pt {
+    padding-top: max(env(safe-area-inset-top), 0px);
+  }
+}
+
+@layer utilities {
+  /* Number glow effect for lottery numbers */
+  .number-glow {
+    text-shadow:
+      0 0 12px hsla(43, 96%, 56%, 0.6),
+      0 0 24px hsla(43, 96%, 56%, 0.3);
+  }
+
+  /* Subtle card hover */
+  .card-hover {
+    @apply transition-all duration-150;
+  }
+  .card-hover:hover {
+    @apply bg-secondary/60 border-border;
+    transform: translateY(-1px);
+  }
+
+  /* Animated gradient badge */
+  .badge-live {
+    background: linear-gradient(90deg, hsl(43,96%,56%,0.15), hsl(43,96%,56%,0.05));
+    animation: shimmer 2.5s ease-in-out infinite;
+  }
+
+  @keyframes shimmer {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; }
+  }
+
+  @keyframes animate-pulse-slow {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+
+  .animate-pulse-slow {
+    animation: animate-pulse-slow 2.5s ease-in-out infinite;
+  }
+
+  /* Mobile horizontal scroll snap */
+  .scroll-snap-x {
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+  }
+  .scroll-snap-item {
+    scroll-snap-align: start;
   }
 }

@@ -1,9 +1,9 @@
 import { Fragment, useState } from "react";
 import { useRoute, useLocation } from "wouter";
 import { useGetLotteryData, getGetLotteryDataQueryKey } from "@workspace/api-client-react";
-import { Card, CardContent } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Database } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const SESSIONS = [
@@ -14,6 +14,8 @@ const SESSIONS = [
   { id: "s2200", label: "22:00" },
   { id: "s2300", label: "23:00" },
 ];
+
+const SESSION_KEYS = ["s0001", "s1300", "s1600", "s1900", "s2200", "s2300"] as const;
 
 export default function DataBrowser() {
   const [match, params] = useRoute("/data/:year");
@@ -33,95 +35,139 @@ export default function DataBrowser() {
     ? months
     : months.filter(m => m.monthNumber.toString() === selectedMonth);
 
+  const totalRows = filteredMonths.reduce((acc, m) => acc + m.results.length, 0);
+
   return (
-    <div className="space-y-6 pb-20 md:pb-0">
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+    <div className="space-y-5 pb-6">
+      {/* Header */}
+      <div className="flex items-start justify-between gap-3">
         <div>
-          <h1 className="text-2xl md:text-3xl font-mono font-bold tracking-tight">DATA LEDGER</h1>
-          <p className="text-muted-foreground font-mono text-sm mt-1">Full historical draw data for {year}</p>
+          <div className="flex items-center gap-1.5 font-mono text-[10px] text-muted-foreground uppercase tracking-widest mb-1">
+            <Database className="w-3 h-3 text-primary" />
+            Arsip Data
+          </div>
+          <h1 className="text-xl sm:text-2xl font-mono font-bold tracking-tight">DATA LEDGER</h1>
+          <p className="text-muted-foreground font-mono text-xs mt-0.5">
+            Riwayat lengkap draw Toto Macau {year}
+          </p>
         </div>
-
-        <div className="flex gap-2">
-          <Select value={year.toString()} onValueChange={(val) => setLocation(`/data/${val}`)}>
-            <SelectTrigger className="w-[120px] font-mono bg-card border-border">
-              <SelectValue placeholder="Year" />
-            </SelectTrigger>
-            <SelectContent className="font-mono bg-card border-border">
-              <SelectItem value="2026">2026</SelectItem>
-              <SelectItem value="2025">2025</SelectItem>
-            </SelectContent>
-          </Select>
-
-          <Select value={selectedMonth} onValueChange={setSelectedMonth}>
-            <SelectTrigger className="w-[140px] font-mono bg-card border-border">
-              <SelectValue placeholder="All Months" />
-            </SelectTrigger>
-            <SelectContent className="font-mono bg-card border-border">
-              <SelectItem value="all">ALL MONTHS</SelectItem>
-              {months.map(m => (
-                <SelectItem key={m.monthNumber} value={m.monthNumber.toString()}>
-                  {m.month}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
+        {!isLoading && (
+          <div className="flex items-center gap-1.5 bg-secondary/50 px-2.5 py-1.5 rounded-lg border border-border/60 shrink-0">
+            <span className="font-mono text-[10px] text-muted-foreground">
+              {totalRows.toLocaleString()} rows
+            </span>
+          </div>
+        )}
       </div>
 
-      <Card className="border-border bg-card overflow-hidden rounded-md">
-        <div className="overflow-x-auto">
-          <table className="w-full font-mono text-sm text-left whitespace-nowrap">
-            <thead className="bg-secondary border-b border-border text-muted-foreground text-xs uppercase tracking-wider sticky top-0 z-10">
+      {/* Filters */}
+      <div className="flex flex-wrap gap-2">
+        <Select value={year.toString()} onValueChange={(val) => setLocation(`/data/${val}`)}>
+          <SelectTrigger className="w-[110px] font-mono bg-card border-border text-sm h-9">
+            <SelectValue placeholder="Tahun" />
+          </SelectTrigger>
+          <SelectContent className="font-mono bg-card border-border">
+            <SelectItem value="2026">2026</SelectItem>
+            <SelectItem value="2025">2025</SelectItem>
+          </SelectContent>
+        </Select>
+
+        <Select value={selectedMonth} onValueChange={setSelectedMonth}>
+          <SelectTrigger className="w-[150px] font-mono bg-card border-border text-sm h-9">
+            <SelectValue placeholder="Semua Bulan" />
+          </SelectTrigger>
+          <SelectContent className="font-mono bg-card border-border">
+            <SelectItem value="all">SEMUA BULAN</SelectItem>
+            {months.map(m => (
+              <SelectItem key={m.monthNumber} value={m.monthNumber.toString()}>
+                {m.month}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+
+      {/* Data table — horizontally scrollable on mobile */}
+      <div className="bg-card border border-border rounded-xl overflow-hidden">
+        <div className="overflow-x-auto -webkit-overflow-scrolling-touch">
+          <table className="w-full font-mono text-sm text-left">
+            <thead className="bg-secondary/40 border-b border-border text-muted-foreground text-xs uppercase tracking-wider sticky top-0 z-10">
               <tr>
-                <th className="px-4 py-3 font-medium border-r border-border w-32">Date</th>
-                <th className="px-4 py-3 font-medium border-r border-border w-24">Day</th>
+                <th className="px-3 sm:px-4 py-3 font-medium border-r border-border/50 whitespace-nowrap">
+                  Tanggal
+                </th>
+                <th className="px-3 sm:px-4 py-3 font-medium border-r border-border/50 hidden sm:table-cell">
+                  Hari
+                </th>
                 {SESSIONS.map(session => (
-                  <th key={session.id} className="px-4 py-3 font-medium text-center">{session.label}</th>
+                  <th key={session.id} className="px-2 sm:px-3 py-3 font-medium text-center whitespace-nowrap">
+                    {session.label}
+                  </th>
                 ))}
               </tr>
             </thead>
-            <tbody className="divide-y divide-border/50">
+            <tbody className="divide-y divide-border/40">
               {isLoading ? (
                 Array.from({ length: 15 }).map((_, i) => (
-                  <tr key={i} className="hover:bg-secondary/20">
-                    <td className="px-4 py-3 border-r border-border"><Skeleton className="h-4 w-20" /></td>
-                    <td className="px-4 py-3 border-r border-border"><Skeleton className="h-4 w-16" /></td>
+                  <tr key={i}>
+                    <td className="px-3 sm:px-4 py-2.5 border-r border-border/40">
+                      <Skeleton className="h-4 w-20" />
+                    </td>
+                    <td className="px-3 sm:px-4 py-2.5 border-r border-border/40 hidden sm:table-cell">
+                      <Skeleton className="h-4 w-16" />
+                    </td>
                     {SESSIONS.map((s) => (
-                      <td key={s.id} className="px-4 py-3 text-center"><Skeleton className="h-4 w-12 mx-auto" /></td>
+                      <td key={s.id} className="px-2 sm:px-3 py-2.5 text-center">
+                        <Skeleton className="h-4 w-10 mx-auto" />
+                      </td>
                     ))}
                   </tr>
                 ))
               ) : filteredMonths.length === 0 ? (
                 <tr>
-                  <td colSpan={8} className="px-4 py-12 text-center text-muted-foreground font-mono">
-                    No data available for this selection
+                  <td colSpan={8} className="px-4 py-14 text-center text-muted-foreground font-mono text-sm">
+                    Tidak ada data untuk filter ini.
                   </td>
                 </tr>
               ) : (
                 filteredMonths.flatMap(month => [
-                  <tr key={`month-${month.monthNumber}`} className="bg-primary/5">
-                    <td colSpan={8} className="px-4 py-2 font-bold text-primary border-y border-primary/20 text-xs">
-                      [ {month.month} {month.year} ]
+                  <tr key={`month-${month.monthNumber}`} className="bg-primary/5 border-y border-primary/15">
+                    <td colSpan={8} className="px-3 sm:px-4 py-2 font-bold text-primary text-xs tracking-wider">
+                      ◈ {month.month.toUpperCase()} {month.year}
+                      <span className="ml-2 text-primary/40 font-normal font-mono">
+                        [{month.results.length} draws]
+                      </span>
                     </td>
                   </tr>,
                   ...month.results.map((result, i) => (
-                    <tr key={`${month.monthNumber}-${i}`} className="hover:bg-secondary/40 transition-colors">
-                      <td className="px-4 py-2 border-r border-border text-muted-foreground">{result.date}</td>
-                      <td className="px-4 py-2 border-r border-border text-muted-foreground/70">{result.day}</td>
-                      <td className={cn("px-4 py-2 text-center tracking-wider", !result.s0001 ? "text-muted-foreground/20" : "text-foreground font-medium")}>{result.s0001 || "-"}</td>
-                      <td className={cn("px-4 py-2 text-center tracking-wider", !result.s1300 ? "text-muted-foreground/20" : "text-foreground font-medium")}>{result.s1300 || "-"}</td>
-                      <td className={cn("px-4 py-2 text-center tracking-wider", !result.s1600 ? "text-muted-foreground/20" : "text-foreground font-medium")}>{result.s1600 || "-"}</td>
-                      <td className={cn("px-4 py-2 text-center tracking-wider", !result.s1900 ? "text-muted-foreground/20" : "text-foreground font-medium")}>{result.s1900 || "-"}</td>
-                      <td className={cn("px-4 py-2 text-center tracking-wider", !result.s2200 ? "text-muted-foreground/20" : "text-foreground font-medium")}>{result.s2200 || "-"}</td>
-                      <td className={cn("px-4 py-2 text-center tracking-wider", !result.s2300 ? "text-muted-foreground/20" : "text-foreground font-medium")}>{result.s2300 || "-"}</td>
-                    </tr>
+                    <Fragment key={`${month.monthNumber}-${i}`}>
+                      <tr className="hover:bg-secondary/30 transition-colors">
+                        <td className="px-3 sm:px-4 py-2.5 border-r border-border/40 text-muted-foreground whitespace-nowrap text-xs sm:text-sm">
+                          {result.date}
+                        </td>
+                        <td className="px-3 sm:px-4 py-2.5 border-r border-border/40 text-muted-foreground/60 text-xs hidden sm:table-cell">
+                          {result.day}
+                        </td>
+                        {SESSION_KEYS.map((key) => {
+                          const val = result[key];
+                          return (
+                            <td key={key} className={cn(
+                              "px-2 sm:px-3 py-2.5 text-center tracking-wider font-bold text-xs sm:text-sm",
+                              val ? "text-foreground" : "text-muted-foreground/20"
+                            )}>
+                              {val || "—"}
+                            </td>
+                          );
+                        })}
+                      </tr>
+                    </Fragment>
                   )),
                 ])
               )}
             </tbody>
           </table>
         </div>
-      </Card>
+      </div>
     </div>
   );
 }

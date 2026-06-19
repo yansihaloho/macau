@@ -149,11 +149,11 @@ export default function Prediction() {
     : [];
 
   return (
-    <div className="space-y-5 pb-20 md:pb-0">
+    <div className="space-y-5 pb-6">
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-start justify-between gap-3">
         <div>
-          <h1 className="text-2xl md:text-3xl font-mono font-bold tracking-tight">AI PREDICTION ENGINE</h1>
+          <h1 className="text-xl sm:text-2xl font-mono font-bold tracking-tight">AI PREDICTION ENGINE</h1>
           <p className="text-muted-foreground font-mono text-sm mt-1">Markov · Frequency · Gap · Trend · Cycle · Prediksi otomatis per sesi</p>
         </div>
         <div className="flex items-center gap-2 shrink-0">

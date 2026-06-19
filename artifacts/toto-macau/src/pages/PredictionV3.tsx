@@ -355,7 +355,7 @@ export default function PredictionV3() {
   const hasData = result !== null;
 
   return (
-    <div className="space-y-5 pb-20">
+    <div className="space-y-5 pb-6">
       {/* Header */}
       <div className="flex items-start justify-between gap-3 flex-wrap">
         <div>

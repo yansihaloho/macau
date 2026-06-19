@@ -79,9 +79,9 @@ export default function Analytics() {
 
   if (hasError) {
     return (
-      <div className="space-y-6 pb-20 md:pb-0">
-        <h1 className="text-2xl md:text-3xl font-mono font-bold tracking-tight">DATA ANALYTICS ENGINE</h1>
-        <div className="bg-destructive/10 border border-destructive text-destructive p-4 rounded-md flex items-center gap-3 font-mono">
+      <div className="space-y-5 pb-6">
+        <h1 className="text-xl sm:text-2xl font-mono font-bold tracking-tight">DATA ANALYTICS ENGINE</h1>
+        <div className="bg-destructive/10 border border-destructive text-destructive p-4 rounded-xl flex items-center gap-3 font-mono">
           <span className="text-lg">⚠</span>
           <span>Gagal memuat data analytics. Pastikan server API berjalan dan coba refresh halaman.</span>
         </div>
@@ -90,11 +90,11 @@ export default function Analytics() {
   }
 
   return (
-    <div className="space-y-8 pb-20 md:pb-0">
+    <div className="space-y-5 pb-6">
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div>
-          <h1 className="text-2xl md:text-3xl font-mono font-bold tracking-tight">DATA ANALYTICS ENGINE</h1>
+          <h1 className="text-xl sm:text-2xl font-mono font-bold tracking-tight">DATA ANALYTICS ENGINE</h1>
           <p className="text-muted-foreground font-mono text-sm mt-1">Advanced statistical analysis · Markov chain · Distribution metrics</p>
         </div>
         <Select value={year.toString()} onValueChange={(v) => setYear(parseInt(v, 10) as 2025 | 2026)}>

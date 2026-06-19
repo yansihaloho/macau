@@ -477,7 +477,7 @@ export default function PredictionHistoryV5() {
   const pending = (data?.length ?? 0) - resolved.length;
 
   return (
-    <div className="space-y-5 pb-20">
+    <div className="space-y-5 pb-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
         <div>
